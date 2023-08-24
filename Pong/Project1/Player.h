@@ -1,19 +1,11 @@
 #pragma once
-#include "ExternalHeaders/raylib.h"
-#include "ExternalHeaders/raymath.h"
-
-struct Box 
-{
-	Vector2 position{};
-	float height{};
-	float width{};
-};
+#include "Utilities.h"
 
 struct Paddle
 {
 public:
 	bool isPlayer1{};
-	Box hitBox = { {}, 300, 25 };
+	Box hitBox = { {}, 200, 25 };
 	float speed = 1000;
 };
 

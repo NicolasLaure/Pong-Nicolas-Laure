@@ -11,29 +11,7 @@ void BallInit(Ball& ball)
 
 void BallUpdate(Ball& ball)
 {
-	Vector2 dir = { 0,0 };
-	switch (ball.dir)
-	{
-	case Directions::DownLeft:
-		dir = { -1,1 };
-		break;
-	case Directions::DownRight:
-		dir = { 1,1 };
-		break;
-	case Directions::UpLeft:
-		dir = { -1,-1 };
-		break;
-	case Directions::UpRight:
-		dir = { 1,-1 };
-		break;
-	default:
-		break;
-	}
-
-	dir.x = dir.x * ball.speed * GetFrameTime();
-	dir.y = dir.y * ball.speed * GetFrameTime();
-
-	ball.position = Vector2Add(ball.position, dir);
+	ball.position = Vector2Add(ball.position, Vector2Scale(ball.dir, ball.speed * GetFrameTime()));
 	ball.hitBox.position = ball.position;
 }
 

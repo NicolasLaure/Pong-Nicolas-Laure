@@ -80,41 +80,43 @@ void CollisionUpdate(GameData& gd)
 	if (gd.ball.position.x < 0)
 	{
 		gd.ball.position = gd.ball.startPosition;
+		gd.ball.speed = gd.ball.baseSpeed;
 		gd.playerTwoScore++;
 	}
 	else if (gd.ball.position.x + gd.ball.size > GetScreenWidth())
 	{
 		gd.ball.position = gd.ball.startPosition;
+		gd.ball.speed = gd.ball.baseSpeed;
 		gd.playerOneScore++;
 	}
 
 	if (gd.ball.position.y <= 0)
 	{
-		if (gd.ball.dir == Directions::UpLeft)
-			gd.ball.dir = Directions::DownLeft;
-		else if (gd.ball.dir == Directions::UpRight)
-			gd.ball.dir = Directions::DownRight;
+		if ((gd.ball.dir.x == -1 && gd.ball.dir.y == -1) || (gd.ball.dir.x == 1 && gd.ball.dir.y == -1))
+			gd.ball.dir.y *= -1;
 	}
 	else if (gd.ball.position.y + gd.ball.size >= GetScreenHeight())
 	{
-		if (gd.ball.dir == Directions::DownLeft)
-			gd.ball.dir = Directions::UpLeft;
-		else if(gd.ball.dir == Directions::DownRight)
-			gd.ball.dir = Directions::UpRight;
+		if (gd.ball.dir.y == 1 && (gd.ball.dir.x == -1 || gd.ball.dir.x == 1))
+			gd.ball.dir.y *= -1;
 	}
 
 	if (BallPaddleCollision(gd.ball.hitBox, gd.player1.hitBox))
 	{
-		if (gd.ball.dir == Directions::DownLeft)
-			gd.ball.dir = Directions::DownRight;
-		else if (gd.ball.dir == Directions::UpLeft)
-			gd.ball.dir = Directions::UpRight;
+		if (gd.ball.dir.x == -1 && (gd.ball.dir.y == 1 || gd.ball.dir.y == -1))
+		{
+			gd.ball.dir.x *= -1;
+			if (gd.ball.speed + 20 <= gd.ball.maxSpeed)
+				gd.ball.speed += 20;
+		}
 	}
 	else if (BallPaddleCollision(gd.ball.hitBox, gd.player2.hitBox))
 	{
-		if (gd.ball.dir == Directions::DownRight)
-			gd.ball.dir = Directions::DownLeft;
-		else if (gd.ball.dir == Directions::UpRight)
-			gd.ball.dir = Directions::UpLeft;
+		if (gd.ball.dir.x == 1 && (gd.ball.dir.y == -1 || gd.ball.dir.y == 1))
+		{
+			gd.ball.dir.x *= -1;
+			if (gd.ball.speed + 20 <= gd.ball.maxSpeed)
+				gd.ball.speed += 20;
+		}
 	}
 }
