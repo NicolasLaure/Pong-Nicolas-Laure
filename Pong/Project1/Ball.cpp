@@ -20,3 +20,25 @@ void BallDraw(Ball ball)
 	DrawRectangle(ball.position.x, ball.position.y, ball.size, ball.size, WHITE);
 }
 
+
+void BallSwitchDirY(Ball& ball)
+{
+	if (ball.position.y <= 0)
+	{
+		ball.position.y = 0;
+		ball.dir.y *= -1;
+	}
+	else if (ball.position.y + ball.size >= GetScreenHeight())
+	{
+		ball.position.y = GetScreenHeight() - ball.size;
+		ball.dir.y *= -1;
+	}
+}
+void BallSwitchDirX(Ball& ball, Paddle player)
+{
+	ball.position.x -= player.hitBox.position.x - ball.position.x;
+	ball.dir.x *= -1;
+	if (ball.speed + 20 <= ball.maxSpeed)
+		ball.speed += 20;
+}
+

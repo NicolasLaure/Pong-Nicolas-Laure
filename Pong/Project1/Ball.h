@@ -19,3 +19,6 @@ void BallInit(Ball& ball);
 void BallUpdate(Ball& ball);
 
 void BallDraw(Ball ball);
+
+void BallSwitchDirY(Ball& ball);
+void BallSwitchDirX(Ball& ball, Paddle player);

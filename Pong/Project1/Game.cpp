@@ -1,6 +1,17 @@
 #include "Game.h"
 
 
+void Initialize(GameData& gd);
+
+void GameUpdate(GameData& gd);
+void GameDraw(GameData gd);
+void TableDraw(GameData gd);
+void ScoreDraw(int score, Vector2 position);
+
+void CollisionUpdate(GameData& gd);
+void BallBorderCollision(GameData& gd);
+void BallPaddleCollision(Ball& ball, Paddle& player);
+
 void RunGame()
 {
 	GameData gd;
@@ -70,12 +81,14 @@ void ScoreDraw(int score, Vector2 position)
 	DrawText(TextFormat("%01i", score), position.x, position.y, 150, LIGHTGRAY);
 }
 
-bool BallPaddleCollision(Box ballHitBox, Box paddleBox)
+void CollisionUpdate(GameData& gd)
 {
-	return (ballHitBox.position.x + ballHitBox.width >= paddleBox.position.x && ballHitBox.position.x <= paddleBox.position.x + paddleBox.width && ballHitBox.position.y + ballHitBox.height >= paddleBox.position.y && ballHitBox.position.y <= paddleBox.position.y + paddleBox.height);
+	BallBorderCollision(gd);
+	BallPaddleCollision(gd.ball, gd.player1);
+	BallPaddleCollision(gd.ball, gd.player2);
 }
 
-void CollisionUpdate(GameData& gd)
+void BallBorderCollision(GameData& gd)
 {
 	if (gd.ball.position.x < 0)
 	{
@@ -90,33 +103,23 @@ void CollisionUpdate(GameData& gd)
 		gd.playerOneScore++;
 	}
 
-	if (gd.ball.position.y <= 0)
-	{
-		if ((gd.ball.dir.x == -1 && gd.ball.dir.y == -1) || (gd.ball.dir.x == 1 && gd.ball.dir.y == -1))
-			gd.ball.dir.y *= -1;
-	}
-	else if (gd.ball.position.y + gd.ball.size >= GetScreenHeight())
-	{
-		if (gd.ball.dir.y == 1 && (gd.ball.dir.x == -1 || gd.ball.dir.x == 1))
-			gd.ball.dir.y *= -1;
-	}
+	BallSwitchDirY(gd.ball);
+}
 
-	if (BallPaddleCollision(gd.ball.hitBox, gd.player1.hitBox))
+void BallPaddleCollision(Ball& ball, Paddle& player)
+{
+	if (ball.hitBox.position.x + ball.hitBox.width >= player.hitBox.position.x
+		&& ball.hitBox.position.x <= player.hitBox.position.x + player.hitBox.width
+		&& ball.hitBox.position.y + ball.hitBox.height >= player.hitBox.position.y
+		&& ball.hitBox.position.y <= player.hitBox.position.y + player.hitBox.height)
 	{
-		if (gd.ball.dir.x == -1 && (gd.ball.dir.y == 1 || gd.ball.dir.y == -1))
+		if (player.hitBox.position.x < GetScreenWidth() / 2)
 		{
-			gd.ball.dir.x *= -1;
-			if (gd.ball.speed + 20 <= gd.ball.maxSpeed)
-				gd.ball.speed += 20;
+			if (ball.position.x > player.hitBox.position.x - (player.hitBox.width / 2))
+				BallSwitchDirX(ball, player);
 		}
-	}
-	else if (BallPaddleCollision(gd.ball.hitBox, gd.player2.hitBox))
-	{
-		if (gd.ball.dir.x == 1 && (gd.ball.dir.y == -1 || gd.ball.dir.y == 1))
-		{
-			gd.ball.dir.x *= -1;
-			if (gd.ball.speed + 20 <= gd.ball.maxSpeed)
-				gd.ball.speed += 20;
-		}
+		else
+			if (ball.position.x < player.hitBox.position.x + (player.hitBox.width / 2))
+				BallSwitchDirX(ball, player);
 	}
 }
