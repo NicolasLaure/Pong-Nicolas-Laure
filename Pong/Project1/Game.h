@@ -1,7 +1,6 @@
 #pragma once
 #include "Ball.h"
 #include "Player.h"
-using namespace std;
 
 struct GameData
 {

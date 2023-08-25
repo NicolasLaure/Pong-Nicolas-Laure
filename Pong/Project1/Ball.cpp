@@ -2,7 +2,7 @@
 
 void BallInit(Ball& ball)
 {
-	ball.startPosition = { static_cast<float>(GetScreenWidth()) / 2, static_cast<float>(GetScreenHeight()) / 2 };
+	ball.startPosition = { static_cast<float>(GetScreenWidth()) / 2, static_cast<float>(GetScreenHeight() / 2 - ball.size / 2) };
 	ball.position = ball.startPosition;
 	ball.hitBox.height = ball.size;
 	ball.hitBox.width = ball.size;

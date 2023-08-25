@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <iostream>
+using namespace std;
 
 
 void Initialize(GameData& gd);
@@ -32,9 +34,9 @@ void Initialize(GameData& gd)
 {
 	InitWindow(1280, 720, "Prototipo");
 
-	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2) };
+	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
 	PadInit(gd.player1, player1Position, true);
-	Vector2 player2Position = { static_cast<float>(GetScreenWidth() - GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2) };
+	Vector2 player2Position = { static_cast<float>(GetScreenWidth() - GetScreenWidth() / 15), static_cast<float>(GetScreenHeight() / 2 - gd.player2.hitBox.height / 2) };
 	PadInit(gd.player2, player2Position, false);
 	BallInit(gd.ball);
 }
@@ -121,5 +123,16 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 		else
 			if (ball.position.x < player.hitBox.position.x + (player.hitBox.width / 2))
 				BallSwitchDirX(ball, player);
+
+		//Tangente = Opuesto/Adyacente
+		Vector2 hitPoint = { player.hitBox.position.x, ball.position.y + ball.size / 2 };
+		float catetoOp = (player.hitBox.position.x + player.hitBox.width / 2) - hitPoint.x;
+		float catetoAd = (player.hitBox.position.y + player.hitBox.height / 2) - hitPoint.y;
+		//float catetoOp = (player.hitBox.position.y + player.hitBox.height / 2) - (ball.position.y + ball.size);
+
+		//float angle = Vector2Angle(hitPoint, { player.hitBox.position.x + player.hitBox.width / 2, player.hitBox.position.y + player.hitBox.height / 2 });
+		float angle = catetoOp / catetoAd;
+		//float angle = tan(hitPoint, { player.hitBox.position.x + player.hitBox.width / 2, player.hitBox.position.y + player.hitBox.height / 2 });
+		cout << angle << endl;
 	}
 }
