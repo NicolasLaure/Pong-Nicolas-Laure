@@ -5,7 +5,7 @@ struct Paddle
 {
 public:
 	bool isPlayer1{};
-	Box hitBox = { {}, 200, 25 };
+	Rect hitBox = { {}, 200, 25 };
 	float speed = 1000;
 };
 

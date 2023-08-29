@@ -2,7 +2,8 @@
 #include "ExternalHeaders/raylib.h"
 #include "ExternalHeaders/raymath.h"
 
-struct Box
+
+struct Rect
 {
 	Vector2 position{};
 	float height{};
