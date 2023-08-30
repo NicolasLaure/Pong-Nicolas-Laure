@@ -7,17 +7,19 @@ enum class Scenes
 {
 	Menu,
 	Game,
+	Options,
 	GameOver,
 	GameQuit
 };
 
 struct GameData
 {
-
 	Scenes scene = Scenes::Menu;
 	Scenes prevScene;
 	bool enteredNewScene;
 
+	bool areRulesShown = false;
+	bool isPaused = false;
 	Paddle player1{};
 	int playerOneScore = 0;
 	int playerTwoScore = 0;

@@ -7,6 +7,9 @@ void GameStart(GameData& gd);
 void GameUpdate(GameData& gd);
 void GameDraw(GameData gd);
 
+void PauseUpdate(GameData& gd);
+void PauseDraw(GameData& gd);
+
 void TableDraw(GameData gd);
 void ScoreDraw(int score, Vector2 position);
 
@@ -19,11 +22,21 @@ void Game(GameData& gd)
 	if (gd.enteredNewScene)
 		GameStart(gd);
 
-	GameUpdate(gd);
-	GameDraw(gd);
+	if (!gd.isPaused)
+	{
+		GameUpdate(gd);
+		GameDraw(gd);
+	}
+	else
+	{
+		PauseUpdate(gd);
+		PauseDraw(gd);
+	}
 }
 void GameStart(GameData& gd)
 {
+	gd.isPaused = true;
+	gd.areRulesShown = true;
 	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
 	PadInit(gd.player1, player1Position, true);
 	Vector2 player2Position = { static_cast<float>(GetScreenWidth() - GetScreenWidth() / 15), static_cast<float>(GetScreenHeight() / 2 - gd.player2.hitBox.height / 2) };
@@ -35,6 +48,14 @@ void GameUpdate(GameData& gd)
 	PlayerUpdate(gd.player1);
 	if (!gd.isSinglePlayer)
 		PlayerUpdate(gd.player2);
+
+	if (IsKeyPressed(KEY_ESCAPE))
+	{
+		if (!gd.isPaused)
+			gd.isPaused = true;
+		else
+			gd.isPaused = false;
+	}
 
 	if (gd.playerOneScore >= 7 || gd.playerTwoScore >= 7)
 	{
@@ -55,6 +76,66 @@ void GameDraw(GameData gd)
 	PlayerDraw(gd.player1);
 	PlayerDraw(gd.player2);
 	BallDraw(gd.ball);
+
+	EndDrawing();
+}
+
+void PauseUpdate(GameData& gd)
+{
+	if (gd.areRulesShown)
+	{
+		if (GetKeyPressed())
+		{
+			gd.isPaused = false;
+			gd.areRulesShown = false;
+		}
+	}
+	else
+	{
+		if (IsKeyPressed(KEY_ESCAPE))
+			gd.isPaused = false;
+
+		if (IsKeyPressed(KEY_SPACE))
+			gd.scene = Scenes::Menu;
+	}
+}
+void PauseDraw(GameData& gd)
+{
+	BeginDrawing();
+	Color panelColor = BLACK;
+	if (!gd.areRulesShown)
+		panelColor = ColorAlpha(panelColor, 0.010f);
+	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), panelColor);
+
+	if (gd.areRulesShown)
+	{
+		const char* rulesTitle = "Rules";
+		int titleSize = 120;
+		int rulesSize = 40;
+		const char* winConditionText = "First who reaches 7 points wins the game";
+		const char* powerUpsText = "Pick PowerUps to get an advantage on your opponent";
+		const char* pressAnyKeyText = "Press any key to start the game";
+		DrawText(rulesTitle, GetScreenWidth() / 2 - MeasureText(rulesTitle, titleSize) / 2, 20, titleSize, WHITE);
+		DrawText(pressAnyKeyText, GetScreenWidth() / 2 - MeasureText(pressAnyKeyText, rulesSize) / 2, GetScreenHeight() - 80, rulesSize, WHITE);
+
+		if (gd.isSinglePlayer)
+			DrawText(winConditionText, GetScreenWidth() / 2 - MeasureText(winConditionText, rulesSize) / 2, GetScreenHeight() / 2, rulesSize, WHITE);
+		else
+		{
+			DrawText(winConditionText, GetScreenWidth() / 2 - MeasureText(winConditionText, rulesSize) / 2, GetScreenHeight() / 3, rulesSize, WHITE);
+			DrawText(powerUpsText, GetScreenWidth() / 2 - MeasureText(powerUpsText, rulesSize) / 2, GetScreenHeight() / 3 + 120, rulesSize, WHITE);
+		}
+	}
+	else
+	{
+		const char* pauseTitle = "Game is Paused";
+		int titleSize = 120;
+
+		const char* backToMenuText = "Press Space to go to Main Menu";
+		int backToMenuSize = 60;
+		DrawText(pauseTitle, GetScreenWidth() / 2 - MeasureText(pauseTitle, titleSize) / 2, 20, titleSize, WHITE);
+		DrawText(backToMenuText, GetScreenWidth() / 2 - MeasureText(backToMenuText, backToMenuSize) / 2, GetScreenHeight() - 80, backToMenuSize, WHITE);
+	}
 
 	EndDrawing();
 }
