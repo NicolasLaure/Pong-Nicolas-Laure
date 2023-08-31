@@ -1,7 +1,6 @@
 #include "Game.h"
 #include <cmath>
 
-
 void Game(GameData& gd);
 void GameStart(GameData& gd);
 void GameUpdate(GameData& gd);
@@ -40,6 +39,9 @@ void GameStart(GameData& gd)
 	gd.player1HasWon = false;
 	gd.isPaused = true;
 	gd.areRulesShown = true;
+
+	gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
+
 	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
 	PadInit(gd.player1, player1Position, true);
 	Vector2 player2Position = { static_cast<float>(GetScreenWidth() - GetScreenWidth() / 15), static_cast<float>(GetScreenHeight() / 2 - gd.player2.hitBox.height / 2) };
@@ -62,6 +64,21 @@ void GameUpdate(GameData& gd)
 			gd.isPaused = false;
 	}
 
+	if (!gd.isPowerUpSpawned && gd.powerUpTimer)
+	{
+		gd.isPowerUpSpawned = true;
+
+		gd.powerUpObject.position;
+		//
+	}
+
+	if (GetTime() >= gd.activeModifierTimer)
+	{
+		if (gd.isPlayer1Modified)
+			ResetPlayer(gd.player1);
+		if (gd.isPlayer2Modified)
+			ResetPlayer(gd.player2);
+	}
 	if (gd.playerOneScore >= 7 || gd.playerTwoScore >= 7)
 	{
 		if (gd.playerOneScore >= 7)

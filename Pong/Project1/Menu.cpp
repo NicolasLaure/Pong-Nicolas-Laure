@@ -19,7 +19,7 @@ void MenuStart(GameData& gd, MenuData& menuData)
 	for (int i = 0; i < menuData.buttonsQty; i++)
 	{
 		textSize = MeasureTextEx(GetFontDefault(), menuData.buttons[i].text, menuData.buttons[i].fontSize, menuData.buttons[i].fontSize * 0.1f);
-		menuData.buttons[i].buttonRect = { {15, static_cast<float>(GetScreenHeight()) / 3 + i * menuData.buttons[i].fontSize * 1.5f}, textSize.y, textSize.x };
+		menuData.buttons[i].buttonRect = { {15, static_cast<float>(GetScreenHeight()) / 3 + i * menuData.buttons[i].fontSize * 1.6f}, textSize.y, textSize.x };
 	}
 }
 void MenuUpdate(GameData& gd, MenuData& menuData)

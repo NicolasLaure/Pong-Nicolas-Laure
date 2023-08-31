@@ -15,7 +15,7 @@ void BallUpdate(Ball& ball)
 
 void BallDraw(Ball ball)
 {
-	DrawRectangle(ball.position.x, ball.position.y, ball.size, ball.size, WHITE);
+	DrawRectangle(ball.position.x, ball.position.y, ball.size, ball.size, ball.color);
 }
 
 void RandomServe(Ball& ball, bool isFirstServe)

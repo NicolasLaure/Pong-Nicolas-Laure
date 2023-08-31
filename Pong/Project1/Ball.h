@@ -10,8 +10,11 @@ public:
 	float size = 25;
 	float baseSpeed = 500;
 	float speed = 500;
+	float prevSpeed = 500;
 	float speedIncrement = 30;
 	float maxSpeed = 1000;
+
+	Color color = WHITE;
 };
 
 void BallInit(Ball& ball);

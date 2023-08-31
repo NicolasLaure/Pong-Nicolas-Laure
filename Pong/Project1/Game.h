@@ -2,6 +2,7 @@
 #include "Ball.h"
 #include "Player.h"
 #include "Cpu.h"
+#include "PowerUps.h"
 
 enum class Scenes
 {
@@ -29,6 +30,15 @@ struct GameData
 
 	bool isGameOver = false;
 	bool justRestarted = false;
+
+	PowerUp powerUpObject;
+	float powerUpTimer{};
+	float powerUpSpawnRate = 8;
+	bool isPowerUpSpawned = false;
+
+	float activeModifierTimer;
+	bool isPlayer1Modified = false;
+	bool isPlayer2Modified = false;
 };
 
 void Game(GameData& gd);

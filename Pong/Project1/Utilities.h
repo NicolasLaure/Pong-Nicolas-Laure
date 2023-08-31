@@ -2,7 +2,6 @@
 #include "ExternalHeaders/raylib.h"
 #include "ExternalHeaders/raymath.h"
 
-
 struct Rect
 {
 	Vector2 position{};
