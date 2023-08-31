@@ -67,7 +67,8 @@ void GameUpdate(GameData& gd)
 		if (gd.playerOneScore >= 7)
 			gd.player1HasWon = true;
 
-		gd.scene = Scenes::GameOver;
+		gd.isPaused = true;
+		gd.isGameOver = true;
 	}
 	BallUpdate(gd.ball);
 	CollisionUpdate(gd);
@@ -93,6 +94,22 @@ void PauseUpdate(GameData& gd)
 		{
 			gd.isPaused = false;
 			gd.areRulesShown = false;
+		}
+	}
+	else if (gd.isGameOver)
+	{
+		if (IsKeyPressed(KEY_ESCAPE))
+		{
+			gd.isGameOver = false;
+			gd.player1HasWon = false;
+			gd.scene = Scenes::Menu;
+		}
+		else if (IsKeyPressed(KEY_SPACE))
+		{
+			gd.isGameOver = false;
+			gd.player1HasWon = false;
+			gd.enteredNewScene = true;
+			gd.justRestarted = true;
 		}
 	}
 	else
@@ -130,6 +147,28 @@ void PauseDraw(GameData& gd)
 			DrawText(winConditionText, GetScreenWidth() / 2 - MeasureText(winConditionText, rulesSize) / 2, GetScreenHeight() / 3, rulesSize, WHITE);
 			DrawText(powerUpsText, GetScreenWidth() / 2 - MeasureText(powerUpsText, rulesSize) / 2, GetScreenHeight() / 3 + 120, rulesSize, WHITE);
 		}
+	}
+	else if (gd.isGameOver)
+	{
+		const char* gameOver = "Game Over";
+		int gameOverSize = 120;
+		const char* winnerText = " ";
+		int winnerSize = 80;
+
+		const char* pressKeyText = "Press Escape to go to main menu, Space to restart the game";
+		int pressKeySize = 40;
+
+		if (gd.player1HasWon)
+			winnerText = "Player 1 Wins!";
+		else if (!gd.player1HasWon && !gd.isSinglePlayer)
+			winnerText = "Player 2 Wins!";
+		else if (!gd.player1HasWon && gd.isSinglePlayer)
+			winnerText = "You Lost to a Bot :(";
+
+		DrawText(gameOver, GetScreenWidth() / 2 - MeasureText(gameOver, gameOverSize) / 2, 20, gameOverSize, WHITE);
+		DrawText(winnerText, GetScreenWidth() / 2 - MeasureText(winnerText, winnerSize) / 2, GetScreenHeight() / 2, winnerSize, WHITE);
+		DrawText(pressKeyText, GetScreenWidth() / 2 - MeasureText(pressKeyText, pressKeySize) / 2, GetScreenHeight() - 50, pressKeySize, WHITE);
+
 	}
 	else
 	{

@@ -22,7 +22,6 @@
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Cpu.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Paddle.cpp" />
@@ -33,7 +32,6 @@
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Cpu.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GameOver.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Paddle.h" />
     <ClInclude Include="Player.h" />

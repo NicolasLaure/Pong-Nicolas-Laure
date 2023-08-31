@@ -1,5 +1,4 @@
 #include "ProgramLoop.h"
-#include "GameOver.h"
 #include "Menu.h"
 #include <iostream>
 
@@ -27,7 +26,11 @@ void GameLoop(GameData& gd)
 {
 	do
 	{
-		gd.enteredNewScene = gd.scene != gd.prevScene;
+		if (!gd.justRestarted)
+			gd.enteredNewScene = gd.scene != gd.prevScene;
+		else
+			gd.justRestarted = false;
+
 		gd.prevScene = gd.scene;
 
 		switch (gd.scene)
@@ -39,9 +42,6 @@ void GameLoop(GameData& gd)
 			break;
 		case Scenes::Game:
 			Game(gd);
-			break;
-		case Scenes::GameOver:
-			GameOver(gd);
 			break;
 		default:
 			break;

@@ -8,7 +8,6 @@ enum class Scenes
 	Menu,
 	Game,
 	Options,
-	GameOver,
 	GameQuit
 };
 
@@ -27,6 +26,9 @@ struct GameData
 	bool player1HasWon = false;
 	Paddle player2{};
 	Ball ball{};
+
+	bool isGameOver = false;
+	bool justRestarted = false;
 };
 
 void Game(GameData& gd);
