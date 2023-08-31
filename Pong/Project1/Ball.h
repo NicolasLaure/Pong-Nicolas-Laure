@@ -1,5 +1,5 @@
 #pragma once
-#include "Player.h"
+#include "Paddle.h"
 
 struct Ball
 {
@@ -16,6 +16,8 @@ public:
 
 void BallInit(Ball& ball);
 void BallUpdate(Ball& ball);
+
+void RandomServe(Ball& ball, bool isFirstServe);
 
 void BallDraw(Ball ball);
 

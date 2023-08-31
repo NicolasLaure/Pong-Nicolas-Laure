@@ -35,6 +35,9 @@ void Game(GameData& gd)
 }
 void GameStart(GameData& gd)
 {
+	gd.playerOneScore = 0;
+	gd.playerTwoScore = 0;
+	gd.player1HasWon = false;
 	gd.isPaused = true;
 	gd.areRulesShown = true;
 	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
@@ -48,6 +51,8 @@ void GameUpdate(GameData& gd)
 	PlayerUpdate(gd.player1);
 	if (!gd.isSinglePlayer)
 		PlayerUpdate(gd.player2);
+	else
+		CpuUpdate(gd.player2, gd.ball);
 
 	if (IsKeyPressed(KEY_ESCAPE))
 	{
@@ -73,8 +78,8 @@ void GameDraw(GameData gd)
 	ClearBackground(BLACK);
 
 	TableDraw(gd);
-	PlayerDraw(gd.player1);
-	PlayerDraw(gd.player2);
+	PaddleDraw(gd.player1);
+	PaddleDraw(gd.player2);
 	BallDraw(gd.ball);
 
 	EndDrawing();
@@ -153,12 +158,14 @@ void BallBorderCollision(GameData& gd)
 		gd.ball.position = gd.ball.startPosition;
 		gd.ball.speed = gd.ball.baseSpeed;
 		gd.playerTwoScore++;
+		RandomServe(gd.ball, false);
 	}
 	else if (gd.ball.position.x + gd.ball.size > GetScreenWidth())
 	{
 		gd.ball.position = gd.ball.startPosition;
 		gd.ball.speed = gd.ball.baseSpeed;
 		gd.playerOneScore++;
+		RandomServe(gd.ball, false);
 	}
 
 	BallSwitchDirY(gd.ball);

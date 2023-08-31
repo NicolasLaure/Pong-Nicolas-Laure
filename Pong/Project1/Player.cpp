@@ -1,15 +1,10 @@
 #include "Player.h"
 
-void PadInit(Paddle& paddle, Vector2 position, bool isPlayerOne)
+void PlayerUpdate(Paddle& player)
 {
-	paddle.hitBox.position.x = position.x;
-	paddle.hitBox.position.y = position.y;
-	paddle.isPlayer1 = isPlayerOne;
-}
 
-void PlayerUpdate(Paddle& player) {
-
-	if (player.isPlayer1) {
+	if (player.isPlayer1)
+	{
 
 		if (IsKeyDown(KEY_W))
 			player.hitBox.position.y -= player.speed * GetFrameTime();
@@ -30,9 +25,4 @@ void PlayerUpdate(Paddle& player) {
 	if (player.hitBox.position.y + player.hitBox.height >= GetScreenHeight())
 		player.hitBox.position.y = GetScreenHeight() - player.hitBox.height;
 
-}
-
-void PlayerDraw(Paddle player) 
-{
-	DrawRectangle(player.hitBox.position.x, player.hitBox.position.y, player.hitBox.width, player.hitBox.height, LIGHTGRAY);
 }

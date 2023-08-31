@@ -4,11 +4,33 @@ void BallInit(Ball& ball)
 {
 	ball.startPosition = { static_cast<float>(GetScreenWidth()) / 2, static_cast<float>(GetScreenHeight() / 2 - ball.size / 2) };
 	ball.position = ball.startPosition;
+
+	RandomServe(ball, true);
+}
+
+void BallUpdate(Ball& ball)
+{
+	ball.position = Vector2Add(ball.position, Vector2Scale(ball.dir, ball.speed * GetFrameTime()));
+}
+
+void BallDraw(Ball ball)
+{
+	DrawRectangle(ball.position.x, ball.position.y, ball.size, ball.size, WHITE);
+}
+
+void RandomServe(Ball& ball, bool isFirstServe)
+{
 	float value = 0;
-	value = GetRandomValue(-5, 5) * 0.1f;
-	if (value <= 0.3f && value >= 0) value = 0.3f;
-	if (value >= -0.3f && value < 0) value = -0.3f;
-	float randX = value;
+	float randX;
+	if (isFirstServe)
+	{
+		value = GetRandomValue(-9, 9) * 0.1f;
+		if (value <= 0.3f && value >= 0) value = 0.4f;
+		if (value >= -0.3f && value < 0) value = -0.4f;
+		randX = value;
+	}
+	else
+		randX = ball.dir.x;
 	if (GetRandomValue(0, 1) == 0)
 	{
 		if (value < 0)
@@ -23,20 +45,10 @@ void BallInit(Ball& ball)
 		else
 			value = 1.0f - value;
 	}
+
 	float randY = value;
-	ball.dir = { randX, randY };
+	ball.dir = Vector2Normalize({ randX, randY });
 }
-
-void BallUpdate(Ball& ball)
-{
-	ball.position = Vector2Add(ball.position, Vector2Scale(ball.dir, ball.speed * GetFrameTime()));
-}
-
-void BallDraw(Ball ball)
-{
-	DrawRectangle(ball.position.x, ball.position.y, ball.size, ball.size, WHITE);
-}
-
 
 void BallSwitchDirY(Ball& ball)
 {
