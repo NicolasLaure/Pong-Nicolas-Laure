@@ -5,13 +5,14 @@
 using namespace std;
 
 void Initialize(GameData& gd);
-void GameLoop(GameData& gd);
+void GameLoop(GameData& gd, MenuData& menuData);
 
 void RunGame()
 {
 	GameData gd;
+	MenuData menuData;
 	Initialize(gd);
-	GameLoop(gd);
+	GameLoop(gd, menuData);
 	CloseWindow();
 }
 
@@ -22,7 +23,7 @@ void Initialize(GameData& gd)
 	SetRandomSeed(time(0));
 }
 
-void GameLoop(GameData& gd)
+void GameLoop(GameData& gd, MenuData& menuData)
 {
 	do
 	{
@@ -38,7 +39,7 @@ void GameLoop(GameData& gd)
 		case Scenes::GameQuit:
 			break;
 		case Scenes::Menu:
-			Menu(gd);
+			Menu(gd, menuData);
 			break;
 		case Scenes::Game:
 			Game(gd);

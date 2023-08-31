@@ -30,4 +30,4 @@ struct MenuData
 	};
 };
 
-void Menu(GameData& gd);
+void Menu(GameData& gd, MenuData& menuData);
