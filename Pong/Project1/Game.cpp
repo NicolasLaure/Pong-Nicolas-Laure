@@ -3,44 +3,48 @@
 
 using namespace game;
 
-void GameStart(GameData& gd);
-void GameUpdate(GameData& gd);
-void GameDraw(GameData gd);
+static GameData gd;
 
-void ResetGameStats(GameData& gd);
+void GameStart();
+void GameUpdate();
+void GameDraw();
 
-void PauseUpdate(GameData& gd);
-void PauseDraw(GameData& gd);
+void ResetGameStats();
 
-void TableDraw(GameData gd);
+void PauseUpdate(Scenes& scene);
+void PauseDraw();
+
+void TableDraw();
 void ScoreDraw(int score, Vector2 position);
 
-void CollisionUpdate(GameData& gd);
-void BallBorderCollision(GameData& gd);
+void CollisionUpdate();
+void BallBorderCollision();
 void BallPaddleCollision(Ball& ball, Paddle& player);
-void BallPowerUpCollision(GameData& gd);
+void BallPowerUpCollision();
 
-void PickPowerUp(GameData& gd);
+void PickPowerUp();
 
-void game::Game(GameData& gd)
+void game::GameLoop(bool enteredNewScene, Scenes& scene)
 {
-	if (gd.enteredNewScene)
-		GameStart(gd);
+
+	//CHE FLACO, REVISA LA OTRA BRANCH XQ ACA FALTA EL JUST RESTARTED PELOTUDITO
+	if (enteredNewScene)
+		GameStart();
 
 	if (!gd.isPaused)
 	{
-		GameUpdate(gd);
-		GameDraw(gd);
+		GameUpdate();
+		GameDraw();
 	}
 	else
 	{
-		PauseUpdate(gd);
-		PauseDraw(gd);
+		PauseUpdate(scene);
+		PauseDraw();
 	}
 }
-void GameStart(GameData& gd)
+void GameStart()
 {
-	ResetGameStats(gd);
+	ResetGameStats();
 
 	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
 	PadInit(gd.player1, player1Position, true);
@@ -48,7 +52,7 @@ void GameStart(GameData& gd)
 	PadInit(gd.player2, player2Position, false);
 	BallInit(gd.ball);
 }
-void GameUpdate(GameData& gd)
+void GameUpdate()
 {
 	PlayerUpdate(gd.player1);
 	if (!gd.isSinglePlayer)
@@ -88,14 +92,14 @@ void GameUpdate(GameData& gd)
 		gd.isGameOver = true;
 	}
 	BallUpdate(gd.ball);
-	CollisionUpdate(gd);
+	CollisionUpdate();
 }
-void GameDraw(GameData gd)
+void GameDraw()
 {
 	BeginDrawing();
 	ClearBackground(BLACK);
 
-	TableDraw(gd);
+	TableDraw();
 	PaddleDraw(gd.player1);
 	PaddleDraw(gd.player2);
 	BallDraw(gd.ball);
@@ -104,7 +108,7 @@ void GameDraw(GameData gd)
 	EndDrawing();
 }
 
-void ResetGameStats(GameData& gd)
+void ResetGameStats()
 {
 	gd.playerOneScore = 0;
 	gd.playerTwoScore = 0;
@@ -118,7 +122,7 @@ void ResetGameStats(GameData& gd)
 	ResetPlayer(gd.player2);
 }
 
-void PauseUpdate(GameData& gd)
+void PauseUpdate(Scenes& scene)
 {
 	if (gd.areRulesShown)
 	{
@@ -134,13 +138,12 @@ void PauseUpdate(GameData& gd)
 		{
 			gd.isGameOver = false;
 			gd.player1HasWon = false;
-			gd.scene = Scenes::Menu;
+			scene = Scenes::Menu;
 		}
 		else if (IsKeyPressed(KEY_SPACE))
 		{
 			gd.isGameOver = false;
 			gd.player1HasWon = false;
-			gd.enteredNewScene = true;
 			gd.justRestarted = true;
 		}
 	}
@@ -150,10 +153,10 @@ void PauseUpdate(GameData& gd)
 			gd.isPaused = false;
 
 		if (IsKeyPressed(KEY_SPACE))
-			gd.scene = Scenes::Menu;
+			scene = Scenes::Menu;
 	}
 }
-void PauseDraw(GameData& gd)
+void PauseDraw()
 {
 	BeginDrawing();
 	Color panelColor = BLACK;
@@ -216,15 +219,15 @@ void PauseDraw(GameData& gd)
 	EndDrawing();
 }
 
-void CollisionUpdate(GameData& gd)
+void CollisionUpdate()
 {
-	BallBorderCollision(gd);
+	BallBorderCollision();
 	BallPaddleCollision(gd.ball, gd.player1);
 	BallPaddleCollision(gd.ball, gd.player2);
 	if (gd.isPowerUpSpawned)
-		BallPowerUpCollision(gd);
+		BallPowerUpCollision();
 }
-void BallBorderCollision(GameData& gd)
+void BallBorderCollision()
 {
 	if (gd.ball.position.x < 0)
 	{
@@ -283,17 +286,17 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 	}
 }
 
-void BallPowerUpCollision(GameData& gd)
+void BallPowerUpCollision()
 {
 	if (gd.ball.position.x + gd.ball.size >= gd.powerUpObject.position.x
 		&& gd.ball.position.x <= gd.powerUpObject.position.x + gd.powerUpObject.size
 		&& gd.ball.position.y + gd.ball.size >= gd.powerUpObject.position.y
 		&& gd.ball.position.y <= gd.powerUpObject.position.y + gd.powerUpObject.size)
 	{
-		PickPowerUp(gd);
+		PickPowerUp();
 	}
 }
-void PickPowerUp(GameData& gd)
+void PickPowerUp()
 {
 	gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
 	gd.isPowerUpSpawned = false;
@@ -319,7 +322,7 @@ void PickPowerUp(GameData& gd)
 	}
 }
 
-void TableDraw(GameData gd)
+void TableDraw()
 {
 	int limitWidth = 5;
 	DrawRectangle(0, 0, GetScreenWidth(), limitWidth, LIGHTGRAY);

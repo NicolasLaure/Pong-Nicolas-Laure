@@ -1,20 +1,14 @@
 #pragma once
 #include "Game.h"
+#include "Button.h"
 
 using namespace game;
 
-struct Button
-{
-	Rect buttonRect;
-	Scenes sceneTo;
-	bool isSinglePlayer;
-	const char* text;
-	int fontSize = 70;
-	Color textColor = WHITE;
-	Color currentTextColor = WHITE;
-};
+void MenuStart();
+void MenuUpdate(Scenes& scene, bool isSinglePlayer);
+void MenuDraw();
 
-struct MenuData
+static struct MenuData
 {
 	const char* title = "Elemental Pong";
 	int titleSize = 120;
@@ -29,5 +23,3 @@ struct MenuData
 		{{0,0}, Scenes::GameQuit, false,"Exit Game"}
 	};
 };
-
-void Menu(GameData& gd, MenuData& menuData);

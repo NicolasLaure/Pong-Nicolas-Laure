@@ -3,22 +3,23 @@
 #include "Player.h"
 #include "Cpu.h"
 #include "PowerUps.h"
+#include "Scenes.h"
 
 namespace game
 {
-	enum class Scenes
+	/*enum class Scenes
 	{
 		Menu,
 		Game,
 		Options,
 		GameQuit
-	};
+	};*/
 
 	struct GameData
 	{
-		Scenes scene = Scenes::Menu;
+		/*Scenes scene = Scenes::Menu;
 		Scenes prevScene;
-		bool enteredNewScene;
+		bool enteredNewScene;*/
 
 		bool areRulesShown = false;
 		bool isPaused = false;
@@ -41,5 +42,5 @@ namespace game
 		float activeModifierTimer;
 	};
 
-	void Game(GameData& gd);
+	void GameLoop(bool enteredNewScene, Scenes& scene);
 }

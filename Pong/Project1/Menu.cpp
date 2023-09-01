@@ -1,19 +1,8 @@
 #include "Menu.h"
 
-void MenuStart(GameData& gd, MenuData& md);
-void MenuUpdate(GameData& gd, MenuData& md);
-void MenuDraw(GameData& gd, MenuData& md);
+static MenuData menuData;
 
-void Menu(GameData& gd, MenuData& menuData)
-{
-	if (gd.enteredNewScene)
-		MenuStart(gd, menuData);
-
-	MenuUpdate(gd, menuData);
-	MenuDraw(gd, menuData);
-}
-
-void MenuStart(GameData& gd, MenuData& menuData)
+void MenuStart()
 {
 	Vector2 textSize;
 	for (int i = 0; i < menuData.buttonsQty; i++)
@@ -22,7 +11,7 @@ void MenuStart(GameData& gd, MenuData& menuData)
 		menuData.buttons[i].buttonRect = { {15, static_cast<float>(GetScreenHeight()) / 3 + i * menuData.buttons[i].fontSize * 1.6f}, textSize.y, textSize.x };
 	}
 }
-void MenuUpdate(GameData& gd, MenuData& menuData)
+void MenuUpdate(Scenes& scene,bool isSinglePlayer)
 {
 	Vector2 mousePos = GetMousePosition();
 	for (Button& button : menuData.buttons)
@@ -39,8 +28,8 @@ void MenuUpdate(GameData& gd, MenuData& menuData)
 			}
 			if (IsMouseButtonReleased(0))
 			{
-				gd.scene = button.sceneTo;
-				gd.isSinglePlayer = button.isSinglePlayer;
+				scene = button.sceneTo;
+				isSinglePlayer = button.isSinglePlayer;
 			}
 		}
 		else
@@ -48,7 +37,7 @@ void MenuUpdate(GameData& gd, MenuData& menuData)
 
 	}
 }
-void MenuDraw(GameData& gd, MenuData& menuData)
+void MenuDraw()
 {
 	BeginDrawing();
 
