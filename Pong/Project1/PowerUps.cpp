@@ -12,9 +12,9 @@ void SpeedBoost(Paddle& paddle, float& activeModifierTimer)
 	float speedBoostDuration = 5;
 
 	paddle.isModified = true;
-	paddle.color = PURPLE;
+	paddle.color = YELLOW;
 	activeModifierTimer = GetTime() + speedBoostDuration;
-	paddle.speed *= 1.8f;
+	paddle.speed *= 2.0f;
 }
 void SlowDown(Paddle& paddle, float& activeModifierTimer)
 {
@@ -23,7 +23,7 @@ void SlowDown(Paddle& paddle, float& activeModifierTimer)
 	paddle.isModified = true;
 	paddle.color = SKYBLUE;
 	activeModifierTimer = GetTime() + slowDownDuration;
-	paddle.speed *= 0.6f;
+	paddle.speed *= 0.3f;
 }
 
 void ResetBall(Ball& ball)
@@ -52,7 +52,7 @@ void SetPowerUp(PowerUp& powerUp, Vector2 newPos)
 		powerUp.color = SKYBLUE;
 		break;
 	case PowerUpType::SpeedBoost:
-		powerUp.color = PURPLE;
+		powerUp.color = YELLOW;
 		break;
 	default:
 		break;

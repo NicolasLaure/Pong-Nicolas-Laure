@@ -63,7 +63,7 @@ void GameUpdate(GameData& gd)
 			gd.isPaused = false;
 	}
 
-	if (!gd.isPowerUpSpawned && GetTime() >= gd.powerUpTimer)
+	if (!gd.isSinglePlayer && !gd.isPowerUpSpawned && GetTime() >= gd.powerUpTimer)
 	{
 		gd.isPowerUpSpawned = true;
 
