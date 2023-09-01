@@ -1,7 +1,8 @@
 #include "Game.h"
 #include <cmath>
 
-void Game(GameData& gd);
+using namespace game;
+
 void GameStart(GameData& gd);
 void GameUpdate(GameData& gd);
 void GameDraw(GameData gd);
@@ -21,7 +22,7 @@ void BallPowerUpCollision(GameData& gd);
 
 void PickPowerUp(GameData& gd);
 
-void Game(GameData& gd)
+void game::Game(GameData& gd)
 {
 	if (gd.enteredNewScene)
 		GameStart(gd);

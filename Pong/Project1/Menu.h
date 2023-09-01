@@ -1,6 +1,8 @@
 #pragma once
 #include "Game.h"
 
+using namespace game;
+
 struct Button
 {
 	Rect buttonRect;

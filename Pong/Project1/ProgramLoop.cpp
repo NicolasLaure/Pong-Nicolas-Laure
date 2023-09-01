@@ -1,7 +1,9 @@
 #include "ProgramLoop.h"
 #include "Menu.h"
 #include <iostream>
+#include "Game.h"
 
+using namespace game; 
 using namespace std;
 
 void Initialize(GameData& gd);

@@ -4,39 +4,42 @@
 #include "Cpu.h"
 #include "PowerUps.h"
 
-enum class Scenes
+namespace game
 {
-	Menu,
-	Game,
-	Options,
-	GameQuit
-};
+	enum class Scenes
+	{
+		Menu,
+		Game,
+		Options,
+		GameQuit
+	};
 
-struct GameData
-{
-	Scenes scene = Scenes::Menu;
-	Scenes prevScene;
-	bool enteredNewScene;
+	struct GameData
+	{
+		Scenes scene = Scenes::Menu;
+		Scenes prevScene;
+		bool enteredNewScene;
 
-	bool areRulesShown = false;
-	bool isPaused = false;
-	Paddle player1{};
-	int playerOneScore = 0;
-	int playerTwoScore = 0;
-	bool isSinglePlayer = false;
-	bool player1HasWon = false;
-	Paddle player2{};
-	Ball ball{};
+		bool areRulesShown = false;
+		bool isPaused = false;
+		Paddle player1{};
+		int playerOneScore = 0;
+		int playerTwoScore = 0;
+		bool isSinglePlayer = false;
+		bool player1HasWon = false;
+		Paddle player2{};
+		Ball ball{};
 
-	bool isGameOver = false;
-	bool justRestarted = false;
+		bool isGameOver = false;
+		bool justRestarted = false;
 
-	PowerUp powerUpObject;
-	float powerUpTimer{};
-	float powerUpSpawnRate = 8;
-	bool isPowerUpSpawned = false;
+		PowerUp powerUpObject;
+		float powerUpTimer{};
+		float powerUpSpawnRate = 8;
+		bool isPowerUpSpawned = false;
 
-	float activeModifierTimer;
-};
+		float activeModifierTimer;
+	};
 
-void Game(GameData& gd);
+	void Game(GameData& gd);
+}
