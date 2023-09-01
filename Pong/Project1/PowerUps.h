@@ -6,13 +6,14 @@ enum class PowerUpType
 {
 	FireBall,
 	SlowDown,
-	SpeedBoost
+	SpeedBoost,
+	Count
 };
 
 struct PowerUp
 {
 	Vector2 position{ 0,0 };
-	float size;
+	float size = 50;
 	PowerUpType type{ PowerUpType::FireBall };
 	Color color{ WHITE };
 };
@@ -25,4 +26,8 @@ void SlowDown(Paddle& paddle, float& activeModifierTimer);
 
 void ResetBall(Ball& ball);
 
+void SetPowerUp(PowerUp& powerUp, Vector2 newPos);
+
 void ResetPlayer(Paddle& paddle);
+
+void PowerUpDraw(PowerUp& powerUp);

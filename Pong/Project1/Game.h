@@ -37,8 +37,6 @@ struct GameData
 	bool isPowerUpSpawned = false;
 
 	float activeModifierTimer;
-	bool isPlayer1Modified = false;
-	bool isPlayer2Modified = false;
 };
 
 void Game(GameData& gd);

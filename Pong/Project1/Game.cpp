@@ -6,6 +6,8 @@ void GameStart(GameData& gd);
 void GameUpdate(GameData& gd);
 void GameDraw(GameData gd);
 
+void ResetGameStats(GameData& gd);
+
 void PauseUpdate(GameData& gd);
 void PauseDraw(GameData& gd);
 
@@ -15,6 +17,9 @@ void ScoreDraw(int score, Vector2 position);
 void CollisionUpdate(GameData& gd);
 void BallBorderCollision(GameData& gd);
 void BallPaddleCollision(Ball& ball, Paddle& player);
+void BallPowerUpCollision(GameData& gd);
+
+void PickPowerUp(GameData& gd);
 
 void Game(GameData& gd)
 {
@@ -34,13 +39,7 @@ void Game(GameData& gd)
 }
 void GameStart(GameData& gd)
 {
-	gd.playerOneScore = 0;
-	gd.playerTwoScore = 0;
-	gd.player1HasWon = false;
-	gd.isPaused = true;
-	gd.areRulesShown = true;
-
-	gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
+	ResetGameStats(gd);
 
 	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
 	PadInit(gd.player1, player1Position, true);
@@ -64,19 +63,19 @@ void GameUpdate(GameData& gd)
 			gd.isPaused = false;
 	}
 
-	if (!gd.isPowerUpSpawned && gd.powerUpTimer)
+	if (!gd.isPowerUpSpawned && GetTime() >= gd.powerUpTimer)
 	{
 		gd.isPowerUpSpawned = true;
 
-		gd.powerUpObject.position;
-		//
+		Vector2 powerUpPosition = { static_cast<float>(GetRandomValue(gd.player1.hitBox.position.x + 10, gd.player2.hitBox.position.x - 10)), static_cast<float>(GetRandomValue(0, GetScreenHeight() - gd.powerUpObject.size)) };
+		SetPowerUp(gd.powerUpObject, powerUpPosition);
 	}
 
 	if (GetTime() >= gd.activeModifierTimer)
 	{
-		if (gd.isPlayer1Modified)
+		if (gd.player1.isModified)
 			ResetPlayer(gd.player1);
-		if (gd.isPlayer2Modified)
+		if (gd.player2.isModified)
 			ResetPlayer(gd.player2);
 	}
 	if (gd.playerOneScore >= 7 || gd.playerTwoScore >= 7)
@@ -99,8 +98,23 @@ void GameDraw(GameData gd)
 	PaddleDraw(gd.player1);
 	PaddleDraw(gd.player2);
 	BallDraw(gd.ball);
-
+	if (gd.isPowerUpSpawned)
+		PowerUpDraw(gd.powerUpObject);
 	EndDrawing();
+}
+
+void ResetGameStats(GameData& gd)
+{
+	gd.playerOneScore = 0;
+	gd.playerTwoScore = 0;
+	gd.player1HasWon = false;
+	gd.isPaused = true;
+	gd.areRulesShown = true;
+	gd.isPowerUpSpawned = false;
+	gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
+	ResetBall(gd.ball);
+	ResetPlayer(gd.player1);
+	ResetPlayer(gd.player2);
 }
 
 void PauseUpdate(GameData& gd)
@@ -206,6 +220,8 @@ void CollisionUpdate(GameData& gd)
 	BallBorderCollision(gd);
 	BallPaddleCollision(gd.ball, gd.player1);
 	BallPaddleCollision(gd.ball, gd.player2);
+	if (gd.isPowerUpSpawned)
+		BallPowerUpCollision(gd);
 }
 void BallBorderCollision(GameData& gd)
 {
@@ -215,6 +231,9 @@ void BallBorderCollision(GameData& gd)
 		gd.ball.speed = gd.ball.baseSpeed;
 		gd.playerTwoScore++;
 		RandomServe(gd.ball, false);
+		ResetBall(gd.ball);
+		ResetPlayer(gd.player1);
+		ResetPlayer(gd.player2);
 	}
 	else if (gd.ball.position.x + gd.ball.size > GetScreenWidth())
 	{
@@ -222,6 +241,9 @@ void BallBorderCollision(GameData& gd)
 		gd.ball.speed = gd.ball.baseSpeed;
 		gd.playerOneScore++;
 		RandomServe(gd.ball, false);
+		ResetBall(gd.ball);
+		ResetPlayer(gd.player1);
+		ResetPlayer(gd.player2);
 	}
 
 	BallSwitchDirY(gd.ball);
@@ -233,6 +255,7 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 		&& ball.position.y + ball.size >= player.hitBox.position.y
 		&& ball.position.y <= player.hitBox.position.y + player.hitBox.height)
 	{
+		ball.lastPaddleHitted = player;
 		ball.position.x -= player.hitBox.position.x - ball.position.x;
 		Vector2 hitPoint = { player.hitBox.position.x, ball.position.y + ball.size / 2 };
 
@@ -259,6 +282,42 @@ void BallPaddleCollision(Ball& ball, Paddle& player)
 	}
 }
 
+void BallPowerUpCollision(GameData& gd)
+{
+	if (gd.ball.position.x + gd.ball.size >= gd.powerUpObject.position.x
+		&& gd.ball.position.x <= gd.powerUpObject.position.x + gd.powerUpObject.size
+		&& gd.ball.position.y + gd.ball.size >= gd.powerUpObject.position.y
+		&& gd.ball.position.y <= gd.powerUpObject.position.y + gd.powerUpObject.size)
+	{
+		PickPowerUp(gd);
+	}
+}
+void PickPowerUp(GameData& gd)
+{
+	gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
+	gd.isPowerUpSpawned = false;
+	switch (gd.powerUpObject.type)
+	{
+	case PowerUpType::SpeedBoost:
+		if (gd.ball.lastPaddleHitted.isPlayer1)
+			SpeedBoost(gd.player1, gd.activeModifierTimer);
+		else
+			SpeedBoost(gd.player2, gd.activeModifierTimer);
+		break;
+	case PowerUpType::FireBall:
+		FireBall(gd.ball);
+		break;
+	case PowerUpType::SlowDown:
+		if (gd.ball.lastPaddleHitted.isPlayer1)
+			SlowDown(gd.player2, gd.activeModifierTimer);
+		else
+			SlowDown(gd.player1, gd.activeModifierTimer);
+		break;
+	default:
+		break;
+	}
+}
+
 void TableDraw(GameData gd)
 {
 	int limitWidth = 5;
@@ -273,6 +332,7 @@ void TableDraw(GameData gd)
 	ScoreDraw(gd.playerOneScore, score1);
 	ScoreDraw(gd.playerTwoScore, score2);
 }
+
 void ScoreDraw(int score, Vector2 position)
 {
 	DrawText(TextFormat("%01i", score), position.x, position.y, 150, LIGHTGRAY);

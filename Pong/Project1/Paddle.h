@@ -8,6 +8,8 @@ public:
 	Rect hitBox = { {}, 200, 25 };
 	float baseSpeed = 1000;
 	float speed = 1000;
+	Color color = LIGHTGRAY;
+	bool isModified = false;
 };
 
 void PadInit(Paddle& paddle, Vector2 position, bool isPlayerOne);

@@ -13,6 +13,7 @@ public:
 	float prevSpeed = 500;
 	float speedIncrement = 30;
 	float maxSpeed = 1000;
+	Paddle lastPaddleHitted;
 
 	Color color = WHITE;
 };

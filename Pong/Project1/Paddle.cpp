@@ -9,5 +9,5 @@ void PadInit(Paddle& paddle, Vector2 position, bool isPlayerOne)
 
 void PaddleDraw(Paddle paddle) 
 {
-	DrawRectangle(paddle.hitBox.position.x, paddle.hitBox.position.y, paddle.hitBox.width, paddle.hitBox.height, LIGHTGRAY);
+	DrawRectangle(paddle.hitBox.position.x, paddle.hitBox.position.y, paddle.hitBox.width, paddle.hitBox.height, paddle.color);
 }
