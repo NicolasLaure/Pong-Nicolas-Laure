@@ -5,13 +5,13 @@ using namespace game;
 
 static GameData gd;
 
-void GameStart();
+void GameStart(bool justRestarted);
 void GameUpdate();
 void GameDraw();
 
-void ResetGameStats();
+void ResetGameStats(bool justRestarted);
 
-void PauseUpdate(Scenes& scene);
+void PauseUpdate(Scenes& scene, bool& justRestarted);
 void PauseDraw();
 
 void TableDraw();
@@ -24,12 +24,11 @@ void BallPowerUpCollision();
 
 void PickPowerUp();
 
-void game::GameLoop(bool enteredNewScene, Scenes& scene)
+void game::GameLoop(bool enteredNewScene, Scenes& scene, bool& justRestarted)
 {
 
-	//CHE FLACO, REVISA LA OTRA BRANCH XQ ACA FALTA EL JUST RESTARTED PELOTUDITO
 	if (enteredNewScene)
-		GameStart();
+		GameStart(justRestarted);
 
 	if (!gd.isPaused)
 	{
@@ -38,13 +37,13 @@ void game::GameLoop(bool enteredNewScene, Scenes& scene)
 	}
 	else
 	{
-		PauseUpdate(scene);
+		PauseUpdate(scene, justRestarted);
 		PauseDraw();
 	}
 }
-void GameStart()
+void GameStart(bool justRestarted)
 {
-	ResetGameStats();
+	ResetGameStats(justRestarted);
 
 	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
 	PadInit(gd.player1, player1Position, true);
@@ -108,7 +107,7 @@ void GameDraw()
 	EndDrawing();
 }
 
-void ResetGameStats()
+void ResetGameStats(bool justRestarted)
 {
 	gd.playerOneScore = 0;
 	gd.playerTwoScore = 0;
@@ -122,7 +121,7 @@ void ResetGameStats()
 	ResetPlayer(gd.player2);
 }
 
-void PauseUpdate(Scenes& scene)
+void PauseUpdate(Scenes& scene, bool& justRestarted)
 {
 	if (gd.areRulesShown)
 	{
@@ -144,7 +143,8 @@ void PauseUpdate(Scenes& scene)
 		{
 			gd.isGameOver = false;
 			gd.player1HasWon = false;
-			gd.justRestarted = true;
+			gd.isPaused = false;
+			justRestarted = true;
 		}
 	}
 	else

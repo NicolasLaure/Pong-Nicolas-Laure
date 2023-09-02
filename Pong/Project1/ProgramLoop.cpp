@@ -1,10 +1,11 @@
 #include "ProgramLoop.h"
 #include "Menu.h"
-#include <iostream>
 #include "Game.h"
 
 using namespace game;
 using namespace std;
+
+static SceneManager sceneManager;
 
 void Initialize();
 void GameLoop();
@@ -20,16 +21,27 @@ void Initialize()
 {
 	InitWindow(1280, 720, "Prototipo");
 	SetExitKey(NULL);
-	SetRandomSeed(time(0));
+	SetRandomSeed(time(nullptr));
 }
 
 void GameLoop()
 {
-	SceneManager sceneManager;
 	sceneManager.scene = Scenes::Menu;
+	sceneManager.prevScene = Scenes::GameQuit;
+	sceneManager.enteredNewScene = false;
+	sceneManager.justRestarted = false;
+
+	sceneManager.isSinglePlayer = false;
+	sceneManager.isPaused = false;
 	do
 	{
-		sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
+		if (!sceneManager.justRestarted)
+			sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
+		else
+		{
+			sceneManager.enteredNewScene = true;
+			sceneManager.justRestarted = false;
+		}
 
 		sceneManager.prevScene = sceneManager.scene;
 
@@ -45,7 +57,7 @@ void GameLoop()
 			MenuDraw();
 			break;
 		case Scenes::Game:
-			GameLoop(sceneManager.enteredNewScene, sceneManager.scene);
+			GameLoop(sceneManager.enteredNewScene, sceneManager.scene, sceneManager.justRestarted);
 			break;
 		default:
 			break;

@@ -7,20 +7,8 @@
 
 namespace game
 {
-	/*enum class Scenes
-	{
-		Menu,
-		Game,
-		Options,
-		GameQuit
-	};*/
-
 	struct GameData
 	{
-		/*Scenes scene = Scenes::Menu;
-		Scenes prevScene;
-		bool enteredNewScene;*/
-
 		bool areRulesShown = false;
 		bool isPaused = false;
 		Paddle player1{};
@@ -42,5 +30,5 @@ namespace game
 		float activeModifierTimer;
 	};
 
-	void GameLoop(bool enteredNewScene, Scenes& scene);
+	void GameLoop(bool enteredNewScene, Scenes& scene, bool& justRestarted);
 }

@@ -1,8 +1,6 @@
 #pragma once
-#include "Game.h"
 #include "Button.h"
-
-using namespace game;
+#include "Scenes.h"
 
 void MenuStart();
 void MenuUpdate(Scenes& scene, bool isSinglePlayer);

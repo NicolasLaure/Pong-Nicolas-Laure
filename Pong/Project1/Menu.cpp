@@ -4,6 +4,9 @@ static MenuData menuData;
 
 void MenuStart()
 {
+	menuData.title = "Elemental Pong";
+	
+
 	Vector2 textSize;
 	for (int i = 0; i < menuData.buttonsQty; i++)
 	{
