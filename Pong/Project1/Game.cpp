@@ -120,6 +120,7 @@ void ResetGameStats()
 	gd.isPaused = true;
 	gd.areRulesShown = true;
 	gd.isPowerUpSpawned = false;
+	gd.ball.speed = gd.ball.baseSpeed;
 	gd.powerUpTimer = GetTime() + gd.powerUpSpawnRate;
 	ResetBall(gd.ball);
 	ResetPlayer(gd.player1);

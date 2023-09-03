@@ -29,7 +29,7 @@ void SlowDown(Paddle& paddle, float& activeModifierTimer)
 void ResetBall(Ball& ball)
 {
 	ball.color = WHITE;
-	ball.speed = ball.prevSpeed;
+	ball.speed = ball.baseSpeed;
 }
 
 void ResetPlayer(Paddle& paddle)
