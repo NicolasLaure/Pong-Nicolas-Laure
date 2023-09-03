@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Cpu.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Menu.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PowerUps.h" />
     <ClInclude Include="ProgramLoop.h" />
+    <ClInclude Include="Scenes.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

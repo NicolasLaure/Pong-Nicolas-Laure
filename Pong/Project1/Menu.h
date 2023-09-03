@@ -1,16 +1,10 @@
 #pragma once
-#include "Game.h"
+#include "Button.h"
+#include "Scenes.h"
 
-struct Button
-{
-	Rect buttonRect;
-	Scenes sceneTo;
-	bool isSinglePlayer;
-	const char* text;
-	int fontSize = 70;
-	Color textColor = WHITE;
-	Color currentTextColor = WHITE;
-};
+void MenuStart();
+void MenuUpdate(Scenes& scene, bool& isSinglePlayer);
+void MenuDraw();
 
 struct MenuData
 {
@@ -26,6 +20,5 @@ struct MenuData
 		{{0,0}, Scenes::Game, false, "Two Player"},
 		{{0,0}, Scenes::GameQuit, false,"Exit Game"}
 	};
-};
 
-void Menu(GameData& gd, MenuData& menuData);
+};

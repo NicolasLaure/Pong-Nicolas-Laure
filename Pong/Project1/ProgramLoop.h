@@ -1,5 +1,15 @@
 #pragma once
-#include "Game.h"
-#include "Menu.h"
+#include "Scenes.h"
+#include <iostream>
+
+struct SceneManager
+{
+	Scenes scene;
+	Scenes prevScene;
+	bool enteredNewScene;
+
+	bool isSinglePlayer;
+	bool isPaused = false;
+};
 
 void RunGame();

@@ -1,51 +1,59 @@
 #include "ProgramLoop.h"
 #include "Menu.h"
-#include <iostream>
+#include "Game.h"
 
+using namespace game;
 using namespace std;
 
-void Initialize(GameData& gd);
-void GameLoop(GameData& gd, MenuData& menuData);
+static SceneManager sceneManager;
+
+void Initialize();
+void GameLoop();
 
 void RunGame()
 {
-	GameData gd;
-	MenuData menuData;
-	Initialize(gd);
-	GameLoop(gd, menuData);
+	Initialize();
+	GameLoop();
 	CloseWindow();
 }
 
-void Initialize(GameData& gd)
+void Initialize()
 {
 	InitWindow(1280, 720, "Prototipo");
 	SetExitKey(NULL);
-	SetRandomSeed(time(0));
+	SetRandomSeed(time(nullptr));
+
+	sceneManager.scene = Scenes::Menu;
+	sceneManager.prevScene = Scenes::GameQuit;
+	sceneManager.enteredNewScene = false;
+
+	sceneManager.isSinglePlayer = false;
+	sceneManager.isPaused = false;
 }
 
-void GameLoop(GameData& gd, MenuData& menuData)
+void GameLoop()
 {
 	do
 	{
-		if (!gd.justRestarted)
-			gd.enteredNewScene = gd.scene != gd.prevScene;
-		else
-			gd.justRestarted = false;
+		sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
+		sceneManager.prevScene = sceneManager.scene;
 
-		gd.prevScene = gd.scene;
-
-		switch (gd.scene)
+		switch (sceneManager.scene)
 		{
 		case Scenes::GameQuit:
 			break;
 		case Scenes::Menu:
-			Menu(gd, menuData);
+			if (sceneManager.enteredNewScene)
+				MenuStart();
+
+			MenuUpdate(sceneManager.scene, sceneManager.isSinglePlayer);
+			MenuDraw();
 			break;
 		case Scenes::Game:
-			Game(gd);
+			GameLoop(sceneManager.enteredNewScene, sceneManager.scene, sceneManager.isSinglePlayer);
 			break;
 		default:
 			break;
 		}
-	} while (gd.scene != Scenes::GameQuit && !WindowShouldClose());
+	} while (sceneManager.scene != Scenes::GameQuit && !WindowShouldClose());
 }
