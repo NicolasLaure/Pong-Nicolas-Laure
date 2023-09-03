@@ -30,5 +30,5 @@ namespace game
 		float activeModifierTimer;
 	};
 
-	void GameLoop(bool enteredNewScene, Scenes& scene, bool& justRestarted);
+	void GameLoop(bool enteredNewScene, Scenes& scene, bool isSinglePlayer);
 }

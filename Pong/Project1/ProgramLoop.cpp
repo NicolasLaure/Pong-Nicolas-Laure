@@ -22,27 +22,20 @@ void Initialize()
 	InitWindow(1280, 720, "Prototipo");
 	SetExitKey(NULL);
 	SetRandomSeed(time(nullptr));
+
+	sceneManager.scene = Scenes::Menu;
+	sceneManager.prevScene = Scenes::GameQuit;
+	sceneManager.enteredNewScene = false;
+
+	sceneManager.isSinglePlayer = false;
+	sceneManager.isPaused = false;
 }
 
 void GameLoop()
 {
-	sceneManager.scene = Scenes::Menu;
-	sceneManager.prevScene = Scenes::GameQuit;
-	sceneManager.enteredNewScene = false;
-	sceneManager.justRestarted = false;
-
-	sceneManager.isSinglePlayer = false;
-	sceneManager.isPaused = false;
 	do
 	{
-		if (!sceneManager.justRestarted)
-			sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
-		else
-		{
-			sceneManager.enteredNewScene = true;
-			sceneManager.justRestarted = false;
-		}
-
+		sceneManager.enteredNewScene = sceneManager.scene != sceneManager.prevScene;
 		sceneManager.prevScene = sceneManager.scene;
 
 		switch (sceneManager.scene)
@@ -57,7 +50,7 @@ void GameLoop()
 			MenuDraw();
 			break;
 		case Scenes::Game:
-			GameLoop(sceneManager.enteredNewScene, sceneManager.scene, sceneManager.justRestarted);
+			GameLoop(sceneManager.enteredNewScene, sceneManager.scene, sceneManager.isSinglePlayer);
 			break;
 		default:
 			break;

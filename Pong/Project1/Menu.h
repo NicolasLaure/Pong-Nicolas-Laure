@@ -3,10 +3,10 @@
 #include "Scenes.h"
 
 void MenuStart();
-void MenuUpdate(Scenes& scene, bool isSinglePlayer);
+void MenuUpdate(Scenes& scene, bool& isSinglePlayer);
 void MenuDraw();
 
-static struct MenuData
+struct MenuData
 {
 	const char* title = "Elemental Pong";
 	int titleSize = 120;
@@ -20,4 +20,5 @@ static struct MenuData
 		{{0,0}, Scenes::Game, false, "Two Player"},
 		{{0,0}, Scenes::GameQuit, false,"Exit Game"}
 	};
+
 };

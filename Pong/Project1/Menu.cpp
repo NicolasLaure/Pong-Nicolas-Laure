@@ -14,7 +14,7 @@ void MenuStart()
 		menuData.buttons[i].buttonRect = { {15, static_cast<float>(GetScreenHeight()) / 3 + i * menuData.buttons[i].fontSize * 1.6f}, textSize.y, textSize.x };
 	}
 }
-void MenuUpdate(Scenes& scene,bool isSinglePlayer)
+void MenuUpdate(Scenes& scene, bool& isSinglePlayer)
 {
 	Vector2 mousePos = GetMousePosition();
 	for (Button& button : menuData.buttons)

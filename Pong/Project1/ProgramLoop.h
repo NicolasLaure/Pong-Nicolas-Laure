@@ -7,7 +7,6 @@ struct SceneManager
 	Scenes scene;
 	Scenes prevScene;
 	bool enteredNewScene;
-	bool justRestarted;
 
 	bool isSinglePlayer;
 	bool isPaused = false;

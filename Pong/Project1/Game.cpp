@@ -5,13 +5,13 @@ using namespace game;
 
 static GameData gd;
 
-void GameStart(bool justRestarted);
+void GameStart(bool isSinglePlayer);
 void GameUpdate();
 void GameDraw();
 
-void ResetGameStats(bool justRestarted);
+void ResetGameStats();
 
-void PauseUpdate(Scenes& scene, bool& justRestarted);
+void PauseUpdate(Scenes& scene);
 void PauseDraw();
 
 void TableDraw();
@@ -24,12 +24,15 @@ void BallPowerUpCollision();
 
 void PickPowerUp();
 
-void game::GameLoop(bool enteredNewScene, Scenes& scene, bool& justRestarted)
+void game::GameLoop(bool enteredNewScene, Scenes& scene, bool isSinglePlayer)
 {
 
-	if (enteredNewScene)
-		GameStart(justRestarted);
-
+	if (enteredNewScene || gd.justRestarted)
+	{
+		GameStart(isSinglePlayer);
+		gd.justRestarted = false;
+	}
+	
 	if (!gd.isPaused)
 	{
 		GameUpdate();
@@ -37,13 +40,14 @@ void game::GameLoop(bool enteredNewScene, Scenes& scene, bool& justRestarted)
 	}
 	else
 	{
-		PauseUpdate(scene, justRestarted);
+		PauseUpdate(scene);
 		PauseDraw();
 	}
 }
-void GameStart(bool justRestarted)
+void GameStart(bool isSinglePlayer)
 {
-	ResetGameStats(justRestarted);
+	gd.isSinglePlayer = isSinglePlayer;
+	ResetGameStats();
 
 	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
 	PadInit(gd.player1, player1Position, true);
@@ -107,10 +111,11 @@ void GameDraw()
 	EndDrawing();
 }
 
-void ResetGameStats(bool justRestarted)
+void ResetGameStats()
 {
 	gd.playerOneScore = 0;
 	gd.playerTwoScore = 0;
+	gd.isGameOver = false;
 	gd.player1HasWon = false;
 	gd.isPaused = true;
 	gd.areRulesShown = true;
@@ -121,7 +126,7 @@ void ResetGameStats(bool justRestarted)
 	ResetPlayer(gd.player2);
 }
 
-void PauseUpdate(Scenes& scene, bool& justRestarted)
+void PauseUpdate(Scenes& scene)
 {
 	if (gd.areRulesShown)
 	{
@@ -141,10 +146,7 @@ void PauseUpdate(Scenes& scene, bool& justRestarted)
 		}
 		else if (IsKeyPressed(KEY_SPACE))
 		{
-			gd.isGameOver = false;
-			gd.player1HasWon = false;
-			gd.isPaused = false;
-			justRestarted = true;
+			gd.justRestarted = true;
 		}
 	}
 	else
