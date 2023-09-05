@@ -15,9 +15,12 @@ struct MenuData
 	int creditsSize = 30;
 
 	static const int buttonsQty = 3;
-	Button buttons[buttonsQty] = {
+	Button scenesButtons[buttonsQty] = {
 		{{0,0}, Scenes::Game, true, "Single Player"},
 		{{0,0}, Scenes::Game, false, "Two Player"},
 		{{0,0}, Scenes::GameQuit, false,"Exit Game"}
 	};
+
+	int windowLimitSpacing = 20;
+	Button creditsButton = { {0,0}, Scenes::Menu, false, credits };
 };
