@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "Objects/Player.h"
 
 void PlayerUpdate(Paddle& player)
 {

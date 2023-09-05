@@ -19,28 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="Cpu.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Paddle.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PowerUps.cpp" />
-    <ClCompile Include="ProgramLoop.cpp" />
+    <ClCompile Include="..\src\GameManagement\Game.cpp" />
+    <ClCompile Include="..\src\GameManagement\Menu.cpp" />
+    <ClCompile Include="..\src\GameManagement\ProgramLoop.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\Objects\Ball.cpp" />
+    <ClCompile Include="..\src\Objects\Cpu.cpp" />
+    <ClCompile Include="..\src\Objects\Paddle.cpp" />
+    <ClCompile Include="..\src\Objects\Player.cpp" />
+    <ClCompile Include="..\src\Objects\PowerUps.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="Cpu.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="Paddle.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PowerUps.h" />
-    <ClInclude Include="ProgramLoop.h" />
-    <ClInclude Include="Scenes.h" />
-    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="..\src\GameManagement\Game.h" />
+    <ClInclude Include="..\src\GameManagement\Menu.h" />
+    <ClInclude Include="..\src\GameManagement\ProgramLoop.h" />
+    <ClInclude Include="..\src\GameManagement\Scenes.h" />
+    <ClInclude Include="..\src\GameManagement\Utilities.h" />
+    <ClInclude Include="..\src\Objects\Ball.h" />
+    <ClInclude Include="..\src\Objects\Button.h" />
+    <ClInclude Include="..\src\Objects\Cpu.h" />
+    <ClInclude Include="..\src\Objects\Paddle.h" />
+    <ClInclude Include="..\src\Objects\Player.h" />
+    <ClInclude Include="..\src\Objects\PowerUps.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -117,12 +117,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)ExternalHeaders</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib;$(SolutionDir)src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)ExternalLibs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\ExternalLibs</AdditionalLibraryDirectories>
       <AdditionalDependencies>raylib.lib;winmm.lib;secret.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)ExternalHeaders</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib;$(SolutionDir)src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +143,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <AdditionalDependencies>raylib.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)ExternalLibs</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\ExternalLibs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

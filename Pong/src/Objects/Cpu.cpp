@@ -1,4 +1,4 @@
-#include "Cpu.h"
+#include "Objects/Cpu.h"
 
 void CpuUpdate(Paddle& paddle, Ball ball)
 {

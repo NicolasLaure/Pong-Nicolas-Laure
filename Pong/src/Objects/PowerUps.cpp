@@ -1,29 +1,30 @@
-#include "PowerUps.h"
+#include "Objects/PowerUps.h"
 
 void FireBall(Ball& ball)
 {
+	float demonBallSpeed = 1400;
 	ball.prevSpeed = ball.speed;
-	ball.speed = 1400;
+	ball.speed = demonBallSpeed;
 	ball.color = RED;
 }
 
 void SpeedBoost(Paddle& paddle, float& activeModifierTimer)
 {
 	float speedBoostDuration = 5;
-
+	float speedMultiplier = 2.0f;
 	paddle.isModified = true;
 	paddle.color = YELLOW;
 	activeModifierTimer = GetTime() + speedBoostDuration;
-	paddle.speed *= 2.0f;
+	paddle.speed *= speedMultiplier;
 }
 void SlowDown(Paddle& paddle, float& activeModifierTimer)
 {
 	float slowDownDuration = 1.5;
-
+	float slowDownMultiplier = 0.3f;
 	paddle.isModified = true;
 	paddle.color = SKYBLUE;
 	activeModifierTimer = GetTime() + slowDownDuration;
-	paddle.speed *= 0.3f;
+	paddle.speed *= slowDownMultiplier;
 }
 
 void ResetBall(Ball& ball)

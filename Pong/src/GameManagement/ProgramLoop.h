@@ -1,5 +1,5 @@
 #pragma once
-#include "Scenes.h"
+#include "GameManagement/Scenes.h"
 #include <iostream>
 
 struct SceneManager

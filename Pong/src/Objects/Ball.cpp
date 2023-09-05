@@ -1,4 +1,4 @@
-#include "Ball.h"
+#include "Objects/Ball.h"
 
 void BallInit(Ball& ball)
 {

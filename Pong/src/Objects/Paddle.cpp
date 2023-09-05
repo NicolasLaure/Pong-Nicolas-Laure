@@ -1,4 +1,4 @@
-#include "Paddle.h"
+#include "Objects/Paddle.h"
 
 void PadInit(Paddle& paddle, Vector2 position, bool isPlayerOne)
 {

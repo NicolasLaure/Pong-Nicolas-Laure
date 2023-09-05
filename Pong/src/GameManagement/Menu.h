@@ -1,6 +1,6 @@
 #pragma once
-#include "Button.h"
-#include "Scenes.h"
+#include "Objects/Button.h"
+#include "GameManagement/Scenes.h"
 
 void MenuStart();
 void MenuUpdate(Scenes& scene, bool& isSinglePlayer);
@@ -20,5 +20,4 @@ struct MenuData
 		{{0,0}, Scenes::Game, false, "Two Player"},
 		{{0,0}, Scenes::GameQuit, false,"Exit Game"}
 	};
-
 };

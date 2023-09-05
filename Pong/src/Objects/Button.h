@@ -1,6 +1,6 @@
 #pragma once
-#include "Utilities.h"
-#include "Scenes.h"
+#include "GameManagement/Utilities.h"
+#include "GameManagement/Scenes.h"
 
 struct Button
 {
@@ -11,4 +11,8 @@ struct Button
 	int fontSize = 70;
 	Color textColor = WHITE;
 	Color currentTextColor = WHITE;
+
+
+	float textHeightSpacerMultiplier = 1.6f;
+	float textPositionX = 15;
 };

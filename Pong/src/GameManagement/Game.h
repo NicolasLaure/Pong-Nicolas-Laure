@@ -1,9 +1,9 @@
 #pragma once
-#include "Ball.h"
-#include "Player.h"
-#include "Cpu.h"
-#include "PowerUps.h"
-#include "Scenes.h"
+#include "Objects/Ball.h"
+#include "Objects/Player.h"
+#include "Objects/Cpu.h"
+#include "Objects/PowerUps.h"
+#include "GameManagement/Scenes.h"
 
 namespace game
 {
@@ -14,6 +14,7 @@ namespace game
 		Paddle player1{};
 		int playerOneScore = 0;
 		int playerTwoScore = 0;
+		int pointsToWin = 7;
 		bool isSinglePlayer = false;
 		bool player1HasWon = false;
 		Paddle player2{};

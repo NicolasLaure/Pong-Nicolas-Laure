@@ -1,6 +1,6 @@
-#include "ProgramLoop.h"
-#include "Menu.h"
-#include "Game.h"
+#include "GameManagement/ProgramLoop.h"
+#include "GameManagement/Menu.h"
+#include "GameManagement/Game.h"
 
 using namespace game;
 using namespace std;

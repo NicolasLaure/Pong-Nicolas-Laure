@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "GameManagement/Game.h"
 #include <cmath>
 
 using namespace game;
@@ -15,7 +15,7 @@ void PauseUpdate(Scenes& scene);
 void PauseDraw();
 
 void TableDraw();
-void ScoreDraw(int score, Vector2 position);
+void ScoreDraw(int score, Vector2 position, int fontSize);
 
 void CollisionUpdate();
 void BallBorderCollision();
@@ -49,9 +49,10 @@ void GameStart(bool isSinglePlayer)
 	gd.isSinglePlayer = isSinglePlayer;
 	ResetGameStats();
 
-	Vector2 player1Position = { static_cast<float>(GetScreenWidth() / 15),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
+	int paddlesToBorder = 2;
+	Vector2 player1Position = { static_cast<float>(gd.player1.hitBox.width),static_cast<float>(GetScreenHeight() / 2 - gd.player1.hitBox.height / 2) };
 	PadInit(gd.player1, player1Position, true);
-	Vector2 player2Position = { static_cast<float>(GetScreenWidth() - GetScreenWidth() / 15), static_cast<float>(GetScreenHeight() / 2 - gd.player2.hitBox.height / 2) };
+	Vector2 player2Position = { static_cast<float>(GetScreenWidth() - gd.player1.hitBox.width * 2), static_cast<float>(GetScreenHeight() / 2 - gd.player2.hitBox.height / 2) };
 	PadInit(gd.player2, player2Position, false);
 	BallInit(gd.ball);
 }
@@ -75,7 +76,8 @@ void GameUpdate()
 	{
 		gd.isPowerUpSpawned = true;
 
-		Vector2 powerUpPosition = { static_cast<float>(GetRandomValue(gd.player1.hitBox.position.x + 10, gd.player2.hitBox.position.x - 10)), static_cast<float>(GetRandomValue(0, GetScreenHeight() - gd.powerUpObject.size)) };
+		int limitSpawn = 30;
+		Vector2 powerUpPosition = { static_cast<float>(GetRandomValue(gd.player1.hitBox.position.x + limitSpawn, gd.player2.hitBox.position.x - limitSpawn)), static_cast<float>(GetRandomValue(limitSpawn, GetScreenHeight() - gd.powerUpObject.size - limitSpawn)) };
 		SetPowerUp(gd.powerUpObject, powerUpPosition);
 	}
 
@@ -86,9 +88,9 @@ void GameUpdate()
 		if (gd.player2.isModified)
 			ResetPlayer(gd.player2);
 	}
-	if (gd.playerOneScore >= 7 || gd.playerTwoScore >= 7)
+	if (gd.playerOneScore >= gd.pointsToWin || gd.playerTwoScore >= gd.pointsToWin)
 	{
-		if (gd.playerOneScore >= 7)
+		if (gd.playerOneScore >= gd.pointsToWin)
 			gd.player1HasWon = true;
 
 		gd.isPaused = true;
@@ -167,6 +169,9 @@ void PauseDraw()
 		panelColor = ColorAlpha(panelColor, 0.010f);
 	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), panelColor);
 
+	int titleWindowLimitSpacing = 20;
+	int pressKeyWindowLimitSpacing = 80;
+
 	if (gd.areRulesShown)
 	{
 		const char* rulesTitle = "Rules";
@@ -175,15 +180,19 @@ void PauseDraw()
 		const char* winConditionText = "First who reaches 7 points wins the game";
 		const char* powerUpsText = "Pick PowerUps to get an advantage on your opponent";
 		const char* pressAnyKeyText = "Press any key to start the game";
-		DrawText(rulesTitle, GetScreenWidth() / 2 - MeasureText(rulesTitle, titleSize) / 2, 20, titleSize, WHITE);
-		DrawText(pressAnyKeyText, GetScreenWidth() / 2 - MeasureText(pressAnyKeyText, rulesSize) / 2, GetScreenHeight() - 80, rulesSize, WHITE);
+		
+
+		int rulesPositionY = GetScreenHeight() / 3 + 120;
+
+		DrawText(rulesTitle, GetScreenWidth() / 2 - MeasureText(rulesTitle, titleSize) / 2, titleWindowLimitSpacing, titleSize, WHITE);
+		DrawText(pressAnyKeyText, GetScreenWidth() / 2 - MeasureText(pressAnyKeyText, rulesSize) / 2, GetScreenHeight() - pressKeyWindowLimitSpacing, rulesSize, WHITE);
 
 		if (gd.isSinglePlayer)
 			DrawText(winConditionText, GetScreenWidth() / 2 - MeasureText(winConditionText, rulesSize) / 2, GetScreenHeight() / 2, rulesSize, WHITE);
 		else
 		{
 			DrawText(winConditionText, GetScreenWidth() / 2 - MeasureText(winConditionText, rulesSize) / 2, GetScreenHeight() / 3, rulesSize, WHITE);
-			DrawText(powerUpsText, GetScreenWidth() / 2 - MeasureText(powerUpsText, rulesSize) / 2, GetScreenHeight() / 3 + 120, rulesSize, WHITE);
+			DrawText(powerUpsText, GetScreenWidth() / 2 - MeasureText(powerUpsText, rulesSize) / 2, rulesPositionY, rulesSize, WHITE);
 		}
 	}
 	else if (gd.isGameOver)
@@ -203,9 +212,9 @@ void PauseDraw()
 		else if (!gd.player1HasWon && gd.isSinglePlayer)
 			winnerText = "You Lost to a Bot :(";
 
-		DrawText(gameOver, GetScreenWidth() / 2 - MeasureText(gameOver, gameOverSize) / 2, 20, gameOverSize, WHITE);
+		DrawText(gameOver, GetScreenWidth() / 2 - MeasureText(gameOver, gameOverSize) / 2, titleWindowLimitSpacing, gameOverSize, WHITE);
 		DrawText(winnerText, GetScreenWidth() / 2 - MeasureText(winnerText, winnerSize) / 2, GetScreenHeight() / 2, winnerSize, WHITE);
-		DrawText(pressKeyText, GetScreenWidth() / 2 - MeasureText(pressKeyText, pressKeySize) / 2, GetScreenHeight() - 50, pressKeySize, WHITE);
+		DrawText(pressKeyText, GetScreenWidth() / 2 - MeasureText(pressKeyText, pressKeySize) / 2, GetScreenHeight() - pressKeyWindowLimitSpacing, pressKeySize, WHITE);
 
 	}
 	else
@@ -215,8 +224,8 @@ void PauseDraw()
 
 		const char* backToMenuText = "Press Space to go to Main Menu";
 		int backToMenuSize = 60;
-		DrawText(pauseTitle, GetScreenWidth() / 2 - MeasureText(pauseTitle, titleSize) / 2, 20, titleSize, WHITE);
-		DrawText(backToMenuText, GetScreenWidth() / 2 - MeasureText(backToMenuText, backToMenuSize) / 2, GetScreenHeight() - 80, backToMenuSize, WHITE);
+		DrawText(pauseTitle, GetScreenWidth() / 2 - MeasureText(pauseTitle, titleSize) / 2, titleWindowLimitSpacing, titleSize, WHITE);
+		DrawText(backToMenuText, GetScreenWidth() / 2 - MeasureText(backToMenuText, backToMenuSize) / 2, GetScreenHeight() - pressKeyWindowLimitSpacing, backToMenuSize, WHITE);
 	}
 
 	EndDrawing();
@@ -334,13 +343,16 @@ void TableDraw()
 	DrawRectangle(0, GetScreenHeight() - limitWidth, GetScreenWidth(), limitWidth, LIGHTGRAY);
 	DrawRectangle(GetScreenWidth() - limitWidth, 0, limitWidth, GetScreenHeight(), LIGHTGRAY);
 
-	Vector2 score1 = { GetScreenWidth() / 3, GetScreenHeight() / 6 };
-	Vector2 score2 = { GetScreenWidth() - GetScreenWidth() / 3 - 50, GetScreenHeight() / 6 };
-	ScoreDraw(gd.playerOneScore, score1);
-	ScoreDraw(gd.playerTwoScore, score2);
+	float scoreDisplacementX = GetScreenWidth() / 3 + 100;
+	float scorePositionY = GetScreenHeight() / 6;
+	int fontSize = 150;
+	Vector2 score1 = { scoreDisplacementX, scorePositionY };
+	Vector2 score2 = { GetScreenWidth() - scoreDisplacementX - MeasureTextEx(GetFontDefault(), TextFormat("%01i", gd.playerTwoScore), fontSize, 0).x * 0.945f, scorePositionY };
+	ScoreDraw(gd.playerOneScore, score1, fontSize);
+	ScoreDraw(gd.playerTwoScore, score2, fontSize);
 }
 
-void ScoreDraw(int score, Vector2 position)
+void ScoreDraw(int score, Vector2 position, int fontSize)
 {
-	DrawText(TextFormat("%01i", score), position.x, position.y, 150, LIGHTGRAY);
+	DrawText(TextFormat("%01i", score), position.x, position.y, fontSize, LIGHTGRAY);
 }

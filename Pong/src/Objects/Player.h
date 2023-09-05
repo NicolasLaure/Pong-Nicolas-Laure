@@ -1,4 +1,4 @@
 #pragma once
-#include "Paddle.h"
+#include "Objects/Paddle.h"
 
 void PlayerUpdate(Paddle& player);

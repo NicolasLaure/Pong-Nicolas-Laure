@@ -1,17 +1,17 @@
-#include "Menu.h"
+#include "GameManagement/Menu.h"
 
 static MenuData menuData;
 
 void MenuStart()
 {
 	menuData.title = "Elemental Pong";
-	
-
 	Vector2 textSize;
+
+	
 	for (int i = 0; i < menuData.buttonsQty; i++)
 	{
 		textSize = MeasureTextEx(GetFontDefault(), menuData.buttons[i].text, menuData.buttons[i].fontSize, menuData.buttons[i].fontSize * 0.1f);
-		menuData.buttons[i].buttonRect = { {15, static_cast<float>(GetScreenHeight()) / 3 + i * menuData.buttons[i].fontSize * 1.6f}, textSize.y, textSize.x };
+		menuData.buttons[i].buttonRect = { {menuData.buttons[i].textPositionX, static_cast<float>(GetScreenHeight()) / 3 + i * menuData.buttons[i].fontSize * menuData.buttons[i].textHeightSpacerMultiplier}, textSize.y, textSize.x };
 	}
 }
 void MenuUpdate(Scenes& scene, bool& isSinglePlayer)
@@ -44,9 +44,10 @@ void MenuDraw()
 {
 	BeginDrawing();
 
+	int windowLimitSpacing = 20;
 	ClearBackground(BLACK);
-	DrawText(menuData.title, GetScreenWidth() / 2 - MeasureText(menuData.title, menuData.titleSize) / 2, 20, menuData.titleSize, WHITE);
-	DrawText(menuData.credits, GetScreenWidth() - MeasureText(menuData.credits, menuData.creditsSize) - 20, GetScreenHeight() - menuData.creditsSize - 20, menuData.creditsSize, WHITE);
+	DrawText(menuData.title, GetScreenWidth() / 2 - MeasureText(menuData.title, menuData.titleSize) / 2, windowLimitSpacing, menuData.titleSize, WHITE);
+	DrawText(menuData.credits, GetScreenWidth() - MeasureText(menuData.credits, menuData.creditsSize) - windowLimitSpacing, GetScreenHeight() - menuData.creditsSize - windowLimitSpacing, menuData.creditsSize, WHITE);
 
 	for (Button& button : menuData.buttons)
 	{

@@ -1,5 +1,5 @@
 #pragma once
-#include "Utilities.h"
+#include "GameManagement/Utilities.h"
 
 struct Paddle
 {
