@@ -8,18 +8,18 @@ using namespace std;
 static SceneManager sceneManager;
 
 void Initialize();
-void GameLoop();
+void ProgramLoop();
 
 void RunGame()
 {
 	Initialize();
-	GameLoop();
+	ProgramLoop();
 	CloseWindow();
 }
 
 void Initialize()
 {
-	InitWindow(1280, 720, "Prototipo");
+	InitWindow(1280, 720, "Elemental Pong");
 	SetExitKey(NULL);
 	SetRandomSeed(time(nullptr));
 
@@ -31,7 +31,7 @@ void Initialize()
 	sceneManager.isPaused = false;
 }
 
-void GameLoop()
+void ProgramLoop()
 {
 	do
 	{

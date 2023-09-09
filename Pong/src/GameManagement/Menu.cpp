@@ -1,5 +1,4 @@
 #include "GameManagement/Menu.h"
-#include <iostream>
 static MenuData menuData;
 
 void ButtonCollisionCheck(Button& button);
@@ -67,7 +66,7 @@ void ButtonCollisionCheck(Button& button)
 		}
 		if (IsMouseButtonReleased(0))
 		{
-			system("start chrome https://nico-drake.itch.io/");
+			OpenURL("https://nico-drake.itch.io/");
 		}
 	}
 	else

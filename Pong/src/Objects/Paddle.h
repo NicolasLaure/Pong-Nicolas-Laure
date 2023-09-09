@@ -13,4 +13,5 @@ public:
 };
 
 void PadInit(Paddle& paddle, Vector2 position, bool isPlayerOne);
+void PadMove(Paddle& paddle, Vector2 dir);
 void PaddleDraw(Paddle player);
